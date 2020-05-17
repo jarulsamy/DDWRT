@@ -1,0 +1,4 @@
+#!/bin/sh 
+
+# set path so optware binaries are automatically found as new commands
+  export PATH=$PATH:/jffs/bin
