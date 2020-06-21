@@ -2,7 +2,7 @@
 gpio enable 1 - POWER LED OFF WHITE
 gpio disable 1 - POWER LED ON WHITE
 
-gpio enable 2 - POWER LED OFF RED 
+gpio enable 2 - POWER LED OFF RED
 gpio disable 2 - POWER LED ON RED
 
 gpio enable 3 - NONE
@@ -12,7 +12,7 @@ gpio enable 4 - NONE
 gpio disable 4 - NONE
 
 gpio enable 5 - NONE
-gpio disable 5 - FACTORY RESET 
+gpio disable 5 - FACTORY RESET
 
 gpio enable 6 - INTERNET LED OFF RED
 gpio disable 6 - INTERNET LED ON RED
