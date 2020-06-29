@@ -1,5 +1,7 @@
 # DDWRT
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/774f4bb243c9447da0392b9b37ce822e)](https://app.codacy.com/manual/jarulsamy/DDWRT?utm_source=github.com&utm_medium=referral&utm_content=jarulsamy/DDWRT&utm_campaign=Badge_Grade_Dashboard)
+
 Some scripts that I used with my DDWRT configuration.
 
 My router: `Netgear R6400v2`
