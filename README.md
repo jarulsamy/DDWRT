@@ -10,9 +10,9 @@ Last tested firmware: `DD-WRT v3.0-r40559 std (08/06/19)`
 
 ## Turning off LEDS
 
-I used [`gpio_test.sh`](gpio_test.sh) to manually determine the purpose of each GPIO pin on my router.
+I used [`gpio_test.sh`](ref/gpio_test.sh) to manually determine the purpose of each GPIO pin on my router.
 
-### Loading Required Tools
+### Loading Required Tools (JFFS)
 
 Enable jffs using these [docs](https://wiki.dd-wrt.com/wiki/index.php/JFFS_File_System). Automount a USB on boot with the EXT2 filesystem.
 
@@ -31,6 +31,10 @@ Currently, the auto startup doesn't work correctly. So the script must be manual
 
     # On router:
     $ /jffs/led_off.sh
+
+### Loading Required Tools (Webserver)
+
+If JFFS is not available for your router, or you just don't want to use an external USB for storage, you can use a webserver plus some crontab entries to auto load scripts on boot.
 
 ### Pin Functions
 
