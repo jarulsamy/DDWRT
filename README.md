@@ -34,21 +34,21 @@ Currently, the auto startup doesn't work correctly. So the script must be manual
 
 ### Pin Functions
 
-| Pin | Enable              | Disable             | Color |
-| :-: | :------------------ | :------------------ | :---: |
-|  1  | Power LED OFF       | Power LED ON        | White |
-|  2  | Power LED OFF       | Power LED ON        |  Red  |
-|  3  | None                | None                |  N/A  |
-|  4  | None                | None                |  N/A  |
-|  5  | None                | **FACTORY RESET**   |  N/A  |
-|  6  | Internet LED OFF    | Internet LED ON     |  Red  |
-|  7  | Internet LED OFF    | Internet LED ON     | White |
-|  8  | 5Ghz WiFi LED OFF   | 5Ghz WiFi LED OFF   | White |
-|  9  | 2.4Ghz WiFi LED OFF | 2.4Ghz WiFi LED OFF | White |
-|  10 | WPS2 LED ON         | WPS2 LED OFF        | White |
-|  11 | WPS1 LED ON         | WPS1 LED OFF        | White |
-|  12 | USB1 LED OFF        | USB1 LED ON         | White |
-|  13 | USB2 LED ON         | USB2 LED OFF        | White |
+|  Pin  | Enable              | Disable             | Color |
+| :---: | :------------------ | :------------------ | :---: |
+|   1   | Power LED OFF       | Power LED ON        | White |
+|   2   | Power LED OFF       | Power LED ON        |  Red  |
+|   3   | None                | None                |  N/A  |
+|   4   | None                | None                |  N/A  |
+|   5   | None                | **FACTORY RESET**   |  N/A  |
+|   6   | Internet LED OFF    | Internet LED ON     |  Red  |
+|   7   | Internet LED OFF    | Internet LED ON     | White |
+|   8   | 5Ghz WiFi LED OFF   | 5Ghz WiFi LED OFF   | White |
+|   9   | 2.4Ghz WiFi LED OFF | 2.4Ghz WiFi LED OFF | White |
+|  10   | WPS2 LED ON         | WPS2 LED OFF        | White |
+|  11   | WPS1 LED ON         | WPS1 LED OFF        | White |
+|  12   | USB1 LED OFF        | USB1 LED ON         | White |
+|  13   | USB2 LED ON         | USB2 LED OFF        | White |
 
 ### Current Limitations
 
