@@ -10,9 +10,9 @@ Last tested firmware: `DD-WRT v3.0-r40559 std (08/06/19)`
 
 ## Turning off LEDS
 
-I used [`gpio_test.sh`](gpio_test.sh) to manually determine the purpose of each GPIO pin on my router.
+I used [`gpio_test.sh`](ref/gpio_test.sh) to manually determine the purpose of each GPIO pin on my router.
 
-### Loading Required Tools
+### Loading Required Tools (JFFS)
 
 Enable jffs using these [docs](https://wiki.dd-wrt.com/wiki/index.php/JFFS_File_System). Automount a USB on boot with the EXT2 filesystem.
 
@@ -32,33 +32,83 @@ Currently, the auto startup doesn't work correctly. So the script must be manual
     # On router:
     $ /jffs/led_off.sh
 
-### Pin Functions
+### Loading Required Tools (Webserver)
 
-| Pin | Enable              | Disable             | Color |
-| :-: | :------------------ | :------------------ | :---: |
-|  1  | Power LED OFF       | Power LED ON        | White |
-|  2  | Power LED OFF       | Power LED ON        |  Red  |
-|  3  | None                | None                |  N/A  |
-|  4  | None                | None                |  N/A  |
-|  5  | None                | **FACTORY RESET**   |  N/A  |
-|  6  | Internet LED OFF    | Internet LED ON     |  Red  |
-|  7  | Internet LED OFF    | Internet LED ON     | White |
-|  8  | 5Ghz WiFi LED OFF   | 5Ghz WiFi LED OFF   | White |
-|  9  | 2.4Ghz WiFi LED OFF | 2.4Ghz WiFi LED OFF | White |
-|  10 | WPS2 LED ON         | WPS2 LED OFF        | White |
-|  11 | WPS1 LED ON         | WPS1 LED OFF        | White |
-|  12 | USB1 LED OFF        | USB1 LED ON         | White |
-|  13 | USB2 LED ON         | USB2 LED OFF        | White |
+If JFFS is not available for your router, or you just don't want to use an external USB for storage, you can use a webserver plus some crontab entries to auto load scripts on boot.
+
+#### Webserver
+
+Setup a simple webserver in whichever method you like. Here is an example using docker:
+
+```yml
+# docker-compose.yml
+
+version: "3"
+
+services:
+  web:
+    container_name: DDWRT_servant
+    image: "httpd:alpine"
+    ports:
+      - "8080:80"
+    environment:
+      TZ: "America/Denver"
+    volumes:
+      - "./htdocs/:/usr/local/apache2/htdocs"
+    restart: unless-stopped
+```
+
+Create a folder called `htdocs` and place `led_off.sh` inside of it.
+
+Then start the container with:
+
+```sh
+$ docker-compose up -d
+```
+
+#### DDWRT
+
+Go to the DDWRT WebUI -> **Administration** -> **Management**.
+
+Navigate to the **Cron** section and ensure it is **Enabled**
+Enter the following into the command portion.
+
+```sh
+0 * * * * root /usr/bin/wget -q http://WEBSERVER-IP/et -o /tmp/root/et /usr/bin/wget -q http://WEBSERVER-IP/led_off.sh -O /tmp/root/led_off.sh && chmod +x /tmp/root/et.sh /tmp/root/led_off.sh && /tmp/root/led_off.sh)
+```
+>You may need to adjust the location of `et` within `led_off.sh`.
+
+Now, everytime the router boots, it grabs the `led_off.sh` script (and helper `et` binary)from the webserver, adds executable permissions, then executes.
+
+### GPIO Pin Functions
+
+|  Pin  | Enable              | Disable             | Color |
+| :---: | :------------------ | :------------------ | :---: |
+|   1   | Power LED OFF       | Power LED ON        | White |
+|   2   | Power LED OFF       | Power LED ON        |  Red  |
+|   3   | None                | None                |  N/A  |
+|   4   | None                | None                |  N/A  |
+|   5   | None                | **FACTORY RESET**   |  N/A  |
+|   6   | Internet LED OFF    | Internet LED ON     |  Red  |
+|   7   | Internet LED OFF    | Internet LED ON     | White |
+|   8   | 5Ghz WiFi LED OFF   | 5Ghz WiFi LED OFF   | White |
+|   9   | 2.4Ghz WiFi LED OFF | 2.4Ghz WiFi LED OFF | White |
+|  10   | WPS2 LED ON         | WPS2 LED OFF        | White |
+|  11   | WPS1 LED ON         | WPS1 LED OFF        | White |
+|  12   | USB1 LED OFF        | USB1 LED ON         | White |
+|  13   | USB2 LED ON         | USB2 LED OFF        | White |
 
 ### Current Limitations
 
 There are some issues disabling ethernet (LAN) activity LEDS. Based on [this](https://forum.dd-wrt.com/phpBB2/viewtopic.php?p=1131616) forum post, I was able to disable all except the LAN1 LED.
 
-    et robowr 0x0 0x18 0x1ff
-    et robowr 0x0 0x18 0x0
-    et robowr 0x0 0x1a 0x0
+```text
+et robowr 0x0 0x18 0x1ff
+et robowr 0x0 0x18 0x0
+et robowr 0x0 0x1a 0x0
 
-    "Those turn off all the LEDs with the exception of LAN 1. I spent a
-    few hours first searching for information in internet and then
-    trying to write different values in the registers using `et robowr`.
-    Nothing worked: LAN 1 keeps blinking happily."
+"Those turn off all the LEDs with the exception of LAN 1. I spent a
+few hours first searching for information in internet and then
+trying to write different values in the registers using `et robowr`.
+Nothing worked: LAN 1 keeps blinking happily."
+```
